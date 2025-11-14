@@ -1,7 +1,7 @@
 This is the order in which the coding agent should read and work on the prompts:
 
 prompt-001-create-app-service,
-prompt-007-etc-etc-etc,
-prompt-002-etc-etc-etc
+prompt-004-create-app-code,
+prompt-005-deploy-app-code
 
 If the agent cant find the exact named matching file it shuld not try to make up any text or code and skip to the next one
