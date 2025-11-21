@@ -1,0 +1,2 @@
+create a second deploy.sh file that will just deploy the genai services needed for the chat ui. 
+To be clear we will have a deploy.sh that deploys any db and app then a deploy-chatui.sh that deploys the genai bicep files
