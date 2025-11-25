@@ -7,6 +7,9 @@ param baseName string = 'expensemgmt'
 @description('Principal ID of the managed identity for role assignments')
 param managedIdentityPrincipalId string
 
+@description('GPT model version')
+param gptModelVersion string = '2024-05-13'
+
 var uniqueSuffix = toLower(uniqueString(resourceGroup().id))
 var openAIName = 'oai-${baseName}-${uniqueSuffix}'
 var searchServiceName = 'search-${baseName}-${uniqueSuffix}'
@@ -40,7 +43,7 @@ resource gpt4oDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-
     model: {
       format: 'OpenAI'
       name: 'gpt-4o'
-      version: '2024-05-13'
+      version: gptModelVersion
     }
     raiPolicyName: 'Microsoft.Default'
   }

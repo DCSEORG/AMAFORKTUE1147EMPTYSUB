@@ -96,9 +96,15 @@ AS
 BEGIN
     SET NOCOUNT ON;
     
-    -- Get Draft status ID
+    -- Get Draft status ID with error handling
     DECLARE @DraftStatusId INT;
     SELECT @DraftStatusId = StatusId FROM dbo.ExpenseStatus WHERE StatusName = 'Draft';
+    
+    IF @DraftStatusId IS NULL
+    BEGIN
+        RAISERROR('Draft status not found in ExpenseStatus table', 16, 1);
+        RETURN;
+    END
     
     INSERT INTO dbo.Expenses (UserId, CategoryId, StatusId, AmountMinor, Currency, ExpenseDate, Description, ReceiptFile)
     VALUES (@UserId, @CategoryId, @DraftStatusId, @AmountMinor, @Currency, @ExpenseDate, @Description, @ReceiptFile);
@@ -150,6 +156,12 @@ BEGIN
     DECLARE @SubmittedStatusId INT;
     SELECT @SubmittedStatusId = StatusId FROM dbo.ExpenseStatus WHERE StatusName = 'Submitted';
     
+    IF @SubmittedStatusId IS NULL
+    BEGIN
+        RAISERROR('Submitted status not found in ExpenseStatus table', 16, 1);
+        RETURN;
+    END
+    
     UPDATE dbo.Expenses
     SET StatusId = @SubmittedStatusId,
         SubmittedAt = SYSUTCDATETIME()
@@ -167,6 +179,12 @@ BEGIN
     
     DECLARE @ApprovedStatusId INT;
     SELECT @ApprovedStatusId = StatusId FROM dbo.ExpenseStatus WHERE StatusName = 'Approved';
+    
+    IF @ApprovedStatusId IS NULL
+    BEGIN
+        RAISERROR('Approved status not found in ExpenseStatus table', 16, 1);
+        RETURN;
+    END
     
     UPDATE dbo.Expenses
     SET StatusId = @ApprovedStatusId,
@@ -186,6 +204,12 @@ BEGIN
     
     DECLARE @RejectedStatusId INT;
     SELECT @RejectedStatusId = StatusId FROM dbo.ExpenseStatus WHERE StatusName = 'Rejected';
+    
+    IF @RejectedStatusId IS NULL
+    BEGIN
+        RAISERROR('Rejected status not found in ExpenseStatus table', 16, 1);
+        RETURN;
+    END
     
     UPDATE dbo.Expenses
     SET StatusId = @RejectedStatusId,

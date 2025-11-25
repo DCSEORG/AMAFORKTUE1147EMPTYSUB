@@ -85,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function formatMessage(text) {
+        // Limit input length to prevent ReDoS attacks
+        const maxLength = 10000;
+        if (text.length > maxLength) {
+            text = text.substring(0, maxLength) + '... [truncated]';
+        }
+        
         // First escape HTML to prevent XSS
         let escaped = text
             .replace(/&/g, '&amp;')
@@ -94,7 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Then apply formatting
 
         // Bold text: **text** -> <strong>text</strong>
-        escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Use non-greedy match with explicit character class to prevent ReDoS
+        escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 
         // Process lines for lists
         const lines = escaped.split('\n');

@@ -105,7 +105,7 @@ public class ExpenseService : IExpenseService
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@UserId", model.UserId);
             command.Parameters.AddWithValue("@CategoryId", model.CategoryId);
-            command.Parameters.AddWithValue("@AmountMinor", (int)(model.Amount * 100));
+            command.Parameters.AddWithValue("@AmountMinor", (int)Math.Round(model.Amount * 100, MidpointRounding.AwayFromZero));
             command.Parameters.AddWithValue("@Currency", "GBP");
             command.Parameters.AddWithValue("@ExpenseDate", model.ExpenseDate);
             command.Parameters.AddWithValue("@Description", (object?)model.Description ?? DBNull.Value);
@@ -136,7 +136,7 @@ public class ExpenseService : IExpenseService
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@ExpenseId", model.ExpenseId);
             command.Parameters.AddWithValue("@CategoryId", model.CategoryId);
-            command.Parameters.AddWithValue("@AmountMinor", (int)(model.Amount * 100));
+            command.Parameters.AddWithValue("@AmountMinor", (int)Math.Round(model.Amount * 100, MidpointRounding.AwayFromZero));
             command.Parameters.AddWithValue("@ExpenseDate", model.ExpenseDate);
             command.Parameters.AddWithValue("@Description", (object?)model.Description ?? DBNull.Value);
             command.Parameters.AddWithValue("@ReceiptFile", DBNull.Value);
@@ -468,11 +468,15 @@ public class ExpenseService : IExpenseService
                        "Also verify AZURE_CLIENT_ID is set in App Service configuration.";
         }
 
+        // Only include file/line info in development environment
+        #if DEBUG
         var stackFrame = new System.Diagnostics.StackTrace(ex, true).GetFrame(0);
         var fileName = stackFrame?.GetFileName() ?? "Unknown";
         var lineNumber = stackFrame?.GetFileLineNumber() ?? 0;
-
         return $"{message} [File: {Path.GetFileName(fileName)}, Line: {lineNumber}]";
+        #else
+        return message;
+        #endif
     }
 
     // Dummy data for fallback when database is unavailable

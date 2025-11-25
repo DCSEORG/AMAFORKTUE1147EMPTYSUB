@@ -102,7 +102,7 @@ python3 run-sql.py
 # Configure database roles for managed identity
 echo "Configuring database roles for managed identity..."
 # Update script.sql with the actual managed identity name
-sed -i.bak "s/MANAGED-IDENTITY-NAME/$MANAGED_IDENTITY_NAME/g" script.sql && rm -f script.sql.bak
+sed -i.bak "s/MANAGED-IDENTITY-NAME/$MANAGED_IDENTITY_NAME/g" script.sql && [ -f script.sql.bak ] && rm -f script.sql.bak
 python3 run-sql-dbrole.py
 
 # Create stored procedures

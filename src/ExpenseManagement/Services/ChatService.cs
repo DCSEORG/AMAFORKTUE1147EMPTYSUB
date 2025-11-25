@@ -249,7 +249,11 @@ public class ChatService : IChatService
                         UserId = args.TryGetProperty("userId", out var uid) ? uid.GetInt32() : 1,
                         CategoryId = args.GetProperty("categoryId").GetInt32(),
                         Amount = args.GetProperty("amount").GetDecimal(),
-                        ExpenseDate = DateTime.Parse(args.GetProperty("expenseDate").GetString()!),
+                        ExpenseDate = DateTime.TryParseExact(args.GetProperty("expenseDate").GetString(), 
+                            "yyyy-MM-dd", 
+                            System.Globalization.CultureInfo.InvariantCulture, 
+                            System.Globalization.DateTimeStyles.None, 
+                            out var parsedDate) ? parsedDate : DateTime.Today,
                         Description = args.TryGetProperty("description", out var desc) ? desc.GetString() : null
                     };
                     var (newId, createError) = await _expenseService.CreateExpenseAsync(createModel);
