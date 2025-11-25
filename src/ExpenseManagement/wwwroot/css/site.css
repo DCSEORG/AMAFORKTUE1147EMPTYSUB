@@ -1,0 +1,130 @@
+/* Modern clean UI styles */
+
+:root {
+    --primary-color: #5B5FC7;
+    --primary-dark: #4A4EB5;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-bg: #f8f9fa;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #333;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.table th {
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+
+.badge {
+    font-weight: 500;
+    font-size: 0.7rem;
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border-color: #e0e0e0;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(91, 95, 199, 0.25);
+}
+
+/* Chat window styles */
+#chatWindow {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+#chatMessages {
+    background-color: #f8f9fa;
+}
+
+.chat-message {
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 85%;
+    word-wrap: break-word;
+}
+
+.chat-message.user {
+    background-color: var(--primary-color);
+    color: white;
+    margin-left: auto;
+}
+
+.chat-message.assistant {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+}
+
+.chat-message.assistant ul,
+.chat-message.assistant ol {
+    margin-bottom: 0;
+    padding-left: 1.2rem;
+}
+
+.chat-message.assistant li {
+    margin-bottom: 4px;
+}
+
+/* Stats cards */
+.bg-light {
+    background-color: #f8f9fa !important;
+    border-radius: 10px;
+}
+
+/* Table hover effect */
+.table-hover tbody tr:hover {
+    background-color: rgba(91, 95, 199, 0.05);
+}
+
+/* Alert styling */
+.alert {
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #chatWindow {
+        width: calc(100% - 40px) !important;
+        right: 20px;
+        left: 20px;
+    }
+}
