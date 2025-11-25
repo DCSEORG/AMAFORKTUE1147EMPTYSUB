@@ -1,0 +1,72 @@
+@page
+@model ApprovalsModel
+@{
+    ViewData["Title"] = "Approvals";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Approve Expenses</h4>
+        <p class="text-muted mb-4">Pending expenses waiting for approval:</p>
+
+        <!-- Filter -->
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label class="form-label">Filter</label>
+                <input type="text" name="filter" class="form-control" placeholder="Search..." 
+                       value="@Model.Filter" />
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-outline-primary me-2">Search</button>
+                <a href="/Approvals" class="btn btn-outline-secondary">Clear</a>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>DATE</th>
+                        <th>EMPLOYEE</th>
+                        <th>CATEGORY</th>
+                        <th>AMOUNT</th>
+                        <th>DESCRIPTION</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.PendingExpenses)
+                    {
+                        <tr>
+                            <td>@expense.ExpenseDate.ToString("dd/MM/yyyy")</td>
+                            <td>@expense.UserName</td>
+                            <td>@expense.CategoryName</td>
+                            <td>£@expense.Amount.ToString("N2")</td>
+                            <td class="text-truncate" style="max-width: 200px;">@expense.Description</td>
+                            <td>
+                                <form method="post" asp-page-handler="Approve" asp-route-id="@expense.ExpenseId" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        <i class="bi bi-check-lg"></i> Approve
+                                    </button>
+                                </form>
+                                <form method="post" asp-page-handler="Reject" asp-route-id="@expense.ExpenseId" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-x-lg"></i> Reject
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!Model.PendingExpenses.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-check-circle fs-1 d-block mb-2"></i>
+                No pending expenses to approve
+            </div>
+        }
+    </div>
+</div>

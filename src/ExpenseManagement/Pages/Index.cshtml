@@ -1,0 +1,100 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="card-title mb-0">Expense Dashboard</h4>
+            <a href="/NewExpense" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> New Expense
+            </a>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <small class="text-muted">Total Expenses</small>
+                        <h3 class="mb-0">@Model.Stats.TotalExpenses</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <small class="text-muted">Pending Approvals</small>
+                        <h3 class="mb-0">@Model.Stats.PendingApprovals</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <small class="text-muted">Approved Amount</small>
+                        <h3 class="mb-0">£@Model.Stats.TotalApprovedAmount.ToString("N2")</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <small class="text-muted">Approved Count</small>
+                        <h3 class="mb-0">@Model.Stats.ApprovedCount</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Recent Expenses</h5>
+            <a href="/Expenses" class="btn btn-sm btn-secondary">View All</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>DATE</th>
+                        <th>EMPLOYEE</th>
+                        <th>CATEGORY</th>
+                        <th>AMOUNT</th>
+                        <th>STATUS</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.Expenses.Take(10))
+                    {
+                        <tr>
+                            <td>@expense.ExpenseDate.ToString("dd MMM yyyy")</td>
+                            <td>@expense.UserName</td>
+                            <td>@expense.CategoryName</td>
+                            <td>£@expense.Amount.ToString("N2")</td>
+                            <td>
+                                @{
+                                    var badgeClass = expense.StatusName switch
+                                    {
+                                        "Approved" => "bg-success",
+                                        "Submitted" => "bg-warning text-dark",
+                                        "Rejected" => "bg-danger",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <span class="badge @badgeClass">@expense.StatusName.ToUpper()</span>
+                            </td>
+                            <td class="text-truncate" style="max-width: 200px;">@expense.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
